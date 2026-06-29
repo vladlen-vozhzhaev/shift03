@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    #redBox, #yellowBox, #blueBox, #limeBox{
+      width: 300px;
+      height: 300px;
+      position: absolute;
+      border: 2px solid black;
+    }
+    #redBox{
+      background: red;
+      top: 0;
+      left: 0;
+    }
+    #limeBox{
+      background: lime;
+      top: 0;
+      right: 0;
+    }
+    #blueBox{
+      background: blue;
+      bottom: 0;
+      left: 0;
+    }
+    #yellowBox{
+      background: yellow;
+      bottom: 0;
+      right: 0;
+    }
+    .circle{
+      width: 100px;
+      height: 100px;
+      background: black;
+      position: absolute;
+      top: 500px;
+      left: 500px;
+      border-radius: 50%;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <div id="redBox" data-color="red"></div>
+  <div id="blueBox" data-color="blue"></div>
+  <div id="yellowBox" data-color="yellow"></div>
+  <div id="limeBox" data-color="lime"></div>
+
+  <script>
+    const redBox = document.getElementById('redBox');
+    const blueBox = document.getElementById('blueBox');
+    const limeBox = document.getElementById('limeBox');
+    const colors = ['red', 'yellow', 'lime', 'blue'];
+    for (let i = 0; i < getIntRandom(5,7); i++) {
+      const circle = renderCircle();
+      circle.onmousedown = (event)=>{
+        circle.style.top = event.clientY - circle.getBoundingClientRect().height/2 + "px";
+        circle.style.left = event.clientX - circle.getBoundingClientRect().width/2 + "px";
+        window.onmousemove = (ev)=>{
+          circle.style.top = ev.clientY - circle.getBoundingClientRect().height/2 + "px";
+          circle.style.left = ev.clientX - circle.getBoundingClientRect().width/2 + "px";
+        }
+        circle.onmouseup = (e)=>{
+          window.onmousemove = ()=>false;
+
+          const box = document.elementsFromPoint(e.clientX, e.clientY)[1];
+          if(circle.dataset.color === box.dataset.color){
+            circle.remove();
+          }else {
+            alert("Неправильно!");
+          }
+        }
+      }
+    }
+
+    function renderCircle(){
+      const circle = document.createElement('div');
+      circle.classList.add('circle');
+      document.body.append(circle);
+      circle.style.top = getIntRandom(redBox.getBoundingClientRect().height, window.innerHeight-blueBox.getBoundingClientRect().height-circle.getBoundingClientRect().height)+"px";
+      circle.style.left = getIntRandom(redBox.getBoundingClientRect().width, window.innerWidth-limeBox.getBoundingClientRect().width-circle.getBoundingClientRect().width)+"px";
+      const color = colors[getIntRandom(0, colors.length-1)]
+      circle.style.background = color;
+      circle.dataset.color = color;
+      return circle;
+    }
+
+    function getIntRandom(min, max){
+      return Math.round(Math.random()*(max-min)+min);
+    }
+  </script>
+</body>
+</html>
