@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <script>
+    fetch("https://openexchangerates.org/api/latest.json?app_id=ad1c3a856f32428db34c670bfefe84c1")
+            .then(response => response.json())
+            .then(result=>{
+              console.log(result);
+            })
+  </script>
+</body>
+</html>
